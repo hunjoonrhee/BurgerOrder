@@ -1,4 +1,4 @@
-package repo;
+package service;
 
 import model.Menu;
 import org.junit.jupiter.api.Test;
