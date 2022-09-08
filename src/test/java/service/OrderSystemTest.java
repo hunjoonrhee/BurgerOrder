@@ -1,4 +1,4 @@
-package repo;
+package service;
 
 import model.Menu;
 import org.junit.jupiter.api.Test;
@@ -16,16 +16,13 @@ class OrderSystemTest {
         Menu menu1 = new Menu(1, 9.90, "Cheese Burger Menü", "Cheese Burger", "Großes Pommes", "Cola");
         Menu menu2 = new Menu(2, 11.90, "Double Cheese Burger Menü", "Double Cheese Burger", "Großes Pommes", "Cola");
 
-        Map<Integer, Menu> menus = new HashMap<>();
-        menus.put(menu1.getNumber(), menu1);
-        menus.put(menu2.getNumber(), menu2);
-
         OrderSystem orderSystem = new OrderSystem();
-        orderSystem.setMenus(menus);
+        orderSystem.addMenu(menu1);
+        orderSystem.addMenu(menu2);
 
         // WHEN
 
-        Menu orderedMenu = orderSystem.placeOrder(menus.get(1).getNumber());
+        Menu orderedMenu = orderSystem.placeOrder(orderSystem.getMenus().get(1).getNumber());
 
         // THEN
 
@@ -39,20 +36,19 @@ class OrderSystemTest {
         Menu menu1 = new Menu(1, 9.90, "Cheese Burger Menü", "Cheese Burger", "Großes Pommes", "Cola");
         Menu menu2 = new Menu(2, 11.90, "Double Cheese Burger Menü", "Double Cheese Burger", "Großes Pommes", "Cola");
 
-        Map<Integer, Menu> menus = new HashMap<>();
-        menus.put(menu1.getNumber(), menu1);
-        menus.put(menu2.getNumber(), menu2);
-
         OrderSystem orderSystem = new OrderSystem();
-        orderSystem.setMenus(menus);
+        orderSystem.addMenu(menu1);
+        orderSystem.addMenu(menu2);
 
         // WHEN
 
         Map<Integer, Menu> allMenus = orderSystem.getMenus();
 
         // THEN
-
-        assertEquals(menus, allMenus);
+        Map<Integer, Menu> expectedMenus = new HashMap<>();
+        expectedMenus.put(menu1.getNumber(), menu1);
+        expectedMenus.put(menu2.getNumber(), menu2);
+        assertEquals(expectedMenus, allMenus);
     }
 
     @Test
@@ -61,18 +57,15 @@ class OrderSystemTest {
         Menu menu1 = new Menu(1, 9.90, "Cheese Burger Menü", "Cheese Burger", "Großes Pommes", "Cola");
         Menu menu2 = new Menu(2, 11.90, "Double Cheese Burger Menü", "Double Cheese Burger", "Großes Pommes", "Cola");
 
-        Map<Integer, Menu> menus = new HashMap<>();
-        menus.put(menu1.getNumber(), menu1);
-        menus.put(menu2.getNumber(), menu2);
-
         OrderSystem orderSystem = new OrderSystem();
-        orderSystem.setMenus(menus);
+        orderSystem.addMenu(menu1);
+        orderSystem.addMenu(menu2);
         int lengthOfMenusBeforeAdding =orderSystem.getMenus().size();
 
         // WHEN
         Menu toBeAddedMenu = new Menu(3, 12.90, "King Double Cheese Burger Menü", "King Double Cheese Burger Menü", "Großes Pommes", "Cola");
-        orderSystem.addMenu(3, toBeAddedMenu);
-        
+        orderSystem.addMenu(toBeAddedMenu);
+
         int lengthOfMenusAfterAdding = orderSystem.getMenus().size();
 
         // THEN
@@ -86,12 +79,9 @@ class OrderSystemTest {
         Menu menu1 = new Menu(1, 9.90, "Cheese Burger Menü", "Cheese Burger", "Großes Pommes", "Cola");
         Menu menu2 = new Menu(2, 11.90, "Double Cheese Burger Menü", "Double Cheese Burger", "Großes Pommes", "Cola");
 
-        Map<Integer, Menu> menus = new HashMap<>();
-        menus.put(menu1.getNumber(), menu1);
-        menus.put(menu2.getNumber(), menu2);
-
         OrderSystem orderSystem = new OrderSystem();
-        orderSystem.setMenus(menus);
+        orderSystem.addMenu(menu1);
+        orderSystem.addMenu(menu2);
 
         // WHEN
         Menu calledMenu = orderSystem.getOrderedById(1);
@@ -100,5 +90,24 @@ class OrderSystemTest {
         // THEN
 
         assertEquals(menu1, calledMenu);
+    }
+
+    @Test
+    void getOrderById_ShouldThrowException_ByWrongId() {
+        // GIVEN
+        Menu menu1 = new Menu(1, 9.90, "Cheese Burger Menü", "Cheese Burger", "Großes Pommes", "Cola");
+        Menu menu2 = new Menu(2, 11.90, "Double Cheese Burger Menü", "Double Cheese Burger", "Großes Pommes", "Cola");
+
+        OrderSystem orderSystem = new OrderSystem();
+        orderSystem.addMenu(menu1);
+        orderSystem.addMenu(menu2);
+
+        // WHEN
+        try{
+            Integer wrongNumber = 3;
+            orderSystem.getOrderedById(wrongNumber);
+            fail();
+        }catch (RuntimeException e){}
+
     }
 }
