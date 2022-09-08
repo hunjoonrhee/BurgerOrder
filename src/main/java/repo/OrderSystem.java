@@ -2,6 +2,7 @@ package repo;
 
 import model.Menu;
 
+import java.sql.SQLOutput;
 import java.util.Map;
 
 public class OrderSystem {
@@ -18,6 +19,10 @@ public class OrderSystem {
 
     public Map<Integer, Menu> getMenus() {
         return menus;
+    }
+
+    public Menu getOrderedById(int n) {
+        return menus.get(n);
     }
 
     public void setMenus(Map<Integer, Menu> menus) {

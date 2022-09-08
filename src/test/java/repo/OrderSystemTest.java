@@ -56,7 +56,7 @@ class OrderSystemTest {
     }
 
     @Test
-    void addMenu_ShouldMakeTheLengthOfMenusSize_ByOne() {
+    void addMenu_ShouldMakeTheLengthOfMenusSize_LongerByOne() {
         // GIVEN
         Menu menu1 = new Menu(1, 9.90, "Cheese Burger Menü", "Cheese Burger", "Großes Pommes", "Cola");
         Menu menu2 = new Menu(2, 11.90, "Double Cheese Burger Menü", "Double Cheese Burger", "Großes Pommes", "Cola");
@@ -78,5 +78,27 @@ class OrderSystemTest {
         // THEN
 
         assertEquals(lengthOfMenusBeforeAdding+1, lengthOfMenusAfterAdding);
+    }
+
+    @Test
+    void getOrderById_ShouldReturn_MenuForId() {
+        // GIVEN
+        Menu menu1 = new Menu(1, 9.90, "Cheese Burger Menü", "Cheese Burger", "Großes Pommes", "Cola");
+        Menu menu2 = new Menu(2, 11.90, "Double Cheese Burger Menü", "Double Cheese Burger", "Großes Pommes", "Cola");
+
+        Map<Integer, Menu> menus = new HashMap<>();
+        menus.put(menu1.getNumber(), menu1);
+        menus.put(menu2.getNumber(), menu2);
+
+        OrderSystem orderSystem = new OrderSystem();
+        orderSystem.setMenus(menus);
+
+        // WHEN
+        Menu calledMenu = orderSystem.getOrderedById(1);
+
+
+        // THEN
+
+        assertEquals(menu1, calledMenu);
     }
 }
